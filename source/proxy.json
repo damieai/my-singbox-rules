@@ -2,10 +2,10 @@
   "version": 1,
   "rules": [
     {
-      "domain_suffix": []
+      "domain_suffix": ["m.yfsp"]
     },
     {
-        "domain":[]
+        "domain":["www.aiyingshi.tv"]
 
     }
   ]
