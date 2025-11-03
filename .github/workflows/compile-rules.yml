@@ -15,6 +15,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # <<< 这里是新增的关键部分，用于授予写入权限
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,7 +38,6 @@ jobs:
           for file in source/*.json; do
             filename=$(basename "$file" .json)
             echo "Compiling $file to dist/$filename.srs"
-            # <<< 这里是修改后的关键命令，移除了 --input
             sing-box rule-set compile "$file" --output "dist/$filename.srs"
           done
 
