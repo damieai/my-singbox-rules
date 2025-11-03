@@ -1,0 +1,59 @@
+# .github/workflows/compile-rules.yml
+
+name: Compile Sing-box Ruleset
+
+# 触发工作流的条件
+on:
+  # 1. 当有代码推送到 main 分支时
+  push:
+    branches:
+      - main
+    paths:
+      - 'source/**.json' # 只有 source 目录下的 json 文件变化时才触发
+
+  # 2. 允许你在 GitHub Actions 页面手动触发
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 运行环境
+
+    steps:
+      # 步骤 1: 检出你的仓库代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 步骤 2: 下载并解压最新版的 sing-box
+      - name: Download and setup sing-box
+        run: |
+          # 从 GitHub API 获取最新的 release 版本号
+          LATEST_TAG=$(curl -s "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
+          # 下载对应版本的 sing-box for Linux amd64
+          curl -Lo sing-box.tar.gz "https://github.com/SagerNet/sing-box/releases/download/${LATEST_TAG}/sing-box-${LATEST_TAG#v}-linux-amd64.tar.gz"
+          # 解压
+          tar -xzf sing-box.tar.gz
+          # 为了方便，将可执行文件路径添加到环境变量
+          echo "$(pwd)/sing-box-${LATEST_TAG#v}-linux-amd64" >> $GITHUB_PATH
+
+      # 步骤 3: 创建用于存放编译后文件的目录
+      - name: Create output directory
+        run: mkdir -p dist
+
+      # 步骤 4: 编译 source 目录下的所有 .json 文件
+      - name: Compile all JSON rulesets to SRS
+        run: |
+          for file in source/*.json; do
+            filename=$(basename "$file" .json)
+            echo "Compiling $file to dist/$filename.srs"
+            sing-box rule-set compile --input "$file" --output "dist/$filename.srs"
+          done
+
+      # 步骤 5: 将编译好的 .srs 文件自动提交回仓库
+      - name: Commit compiled files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-compile rulesets"
+          file_pattern: "dist/*.srs" # 只提交 dist 目录下的 .srs 文件
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
