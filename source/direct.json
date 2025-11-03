@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "domain_suffix": [
+        "linux.do",
+        "kk.os3.cn"
+      ]
+    },
+    {
+      "domain":[]
+    }
+  ]
+}
