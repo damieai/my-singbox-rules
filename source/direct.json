@@ -3,6 +3,8 @@
     "rules": [
         {
             "domain": [
+                "account.mekari.io",
+                "staging.cd.jurnal.id",
                 "126.com",
                 "126.link",
                 "126.net",
@@ -1035,6 +1037,9 @@
             ],
             "domain_suffix": [
                 "emby.bangumi.ca",
+                ".mekari.io",
+                ".mekari",
+                ".cd.jurnal.id",
                 ".126.com",
                 ".126.link",
                 ".126.net",
