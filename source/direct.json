@@ -3,6 +3,7 @@
     "rules": [
         {
             "domain": [
+                "kf-ui2.desty.one",
                 "account.mekari.io",
                 "staging.cd.jurnal.id",
                 "126.com",
