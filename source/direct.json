@@ -3,11 +3,6 @@
     "rules": [
         {
             "domain": [
-                "gstatic.com",
-                "ssl.gstatic.com",
-                "fonts.gstatic.com",
-                "www.gstatic.com",
-                "googleusercontent.com",
                 "kf-ui2.desty.one",
                 "account.mekari.io",
                 "staging.cd.jurnal.id",
